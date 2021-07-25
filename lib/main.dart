@@ -17,17 +17,11 @@ void main() {
     const ProviderScope(child: MyApp()),
   );
 
-
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  //@override
- // _FirstScreenState createState() {
-//    return _FirstScreenState();
-//  }
-//}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: FirstScreen());
@@ -38,29 +32,12 @@ class FirstScreen extends ConsumerWidget {
 
   // this allows us to access the TextField text
   TextEditingController textFieldController = TextEditingController();
-  DateTime? _selectedDate;
   DateTime selectedDate = DateTime.now();
 
-/*
-  _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null && picked != selectedDate)
-     // setState(() {
-        selectedDate = picked;
-    //  });
-  }
-*/
 
   @override
   Widget build(BuildContext context,  ScopedReader watch) {
 
-    final studentName = watch(studentNameProvider).state;
-    final studentGender =  watch(studentGenderProvider).state;
     final studentDOB =  watch(studentDOBProvider).state;
     DateTime selectedDate = DateTime.now();
 
@@ -166,7 +143,7 @@ class FirstScreen extends ConsumerWidget {
 }
 
 class SecondScreen extends ConsumerWidget {
-  String text = "";
+  final String text = "";
 
   // receive data from the FirstScreen as a parameter
   SecondScreen({Key? key}) : super(key: key);
