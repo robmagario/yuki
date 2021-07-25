@@ -61,6 +61,7 @@ class FirstScreen extends ConsumerWidget {
 
     final studentName = watch(studentNameProvider).state;
     final studentGender =  watch(studentGenderProvider).state;
+    final studentDOB =  watch(studentDOBProvider).state;
     DateTime selectedDate = DateTime.now();
 
     String val = "M";
@@ -110,8 +111,9 @@ class FirstScreen extends ConsumerWidget {
               ),],
           ),
           Text(
-            context.read(studentDOBProvider).state.toString(),
+            studentDOB.toString(),
             style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
+
           ),
           SizedBox(
             height: 20.0,
