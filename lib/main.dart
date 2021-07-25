@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 final studentNameProvider = StateProvider<String>((ref) => '');
 final studentGenderProvider = StateProvider<String>((ref) => 'M');
-final studentDOBProvider = StateProvider<String>((ref) => '');
+String now = DateFormat("yyyy-MM-dd").format(DateTime.now());
+final studentDOBProvider = StateProvider<String>((ref) => now);
 
 void main() {
  // runApp(MaterialApp(
@@ -39,7 +41,7 @@ class FirstScreen extends ConsumerWidget {
   DateTime? _selectedDate;
   DateTime selectedDate = DateTime.now();
 
-
+/*
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -52,7 +54,7 @@ class FirstScreen extends ConsumerWidget {
         selectedDate = picked;
     //  });
   }
-
+*/
 
   @override
   Widget build(BuildContext context,  ScopedReader watch) {
@@ -108,14 +110,28 @@ class FirstScreen extends ConsumerWidget {
               ),],
           ),
           Text(
-            "${selectedDate.toLocal()}".split(' ')[0],
+            context.read(studentDOBProvider).state.toString(),
             style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 20.0,
           ),
           ElevatedButton(
-            onPressed: () => _selectDate(context), // Refer step 3
+            onPressed: ()  async {
+              await showDatePicker(
+                  context: context,
+                  initialDate: selectedDate, // Refer step 1
+                  firstDate: DateTime(2000),
+              lastDate: DateTime(2025),
+              ).then((pickedDate) {
+                if (pickedDate!=null) {
+                  String newPickedDate = DateFormat("yyyy-MM-dd").format(pickedDate);
+                  context
+                      .read(studentDOBProvider)
+                      .state = newPickedDate;
+                }
+              });
+    },
             child: Text(
               'Select date',
               style:
@@ -169,7 +185,14 @@ class SecondScreen extends ConsumerWidget {
               context.read(studentGenderProvider).state.toString()=="M"? "Male":"Female",
               style: TextStyle(fontSize: 24),
             ),
-            )],
+            ),
+            Padding(padding: const EdgeInsets.all(16.0), child: Text(
+
+              context.read(studentDOBProvider).state.toString(),
+              style: TextStyle(fontSize: 24),
+            ),
+            ),
+          ],
         )
 
     );
